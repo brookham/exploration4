@@ -1,6 +1,6 @@
 'use client'
 
-import { useProfile } from "@/contexts/pofileContext";
+import { useProfile } from "@/contexts/profileContext";
 
 export default function Home() {
 

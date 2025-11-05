@@ -1,6 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import type { Metadata } from "next";
-import { ProfileProvider } from "@/contexts/pofileContext";
+import { ProfileProvider } from "@/contexts/profileContext";
 import { Profile, profileSelectString } from "@/types/profile";
 
 export const metadata: Metadata = {
