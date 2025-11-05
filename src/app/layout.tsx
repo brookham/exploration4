@@ -1,3 +1,4 @@
+import { createClient } from "@/utils/supabase/server";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -5,11 +6,25 @@ export const metadata: Metadata = {
   description: "brook hamiltons exploration 4",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  const supabase = await createClient()
+
+  const user = await supabase.auth.getUser()
+
+  // console.log(data.user?.email)
+
+  const profile = await supabase
+    .from('profiles')
+    .select()
+    .eq('id', user.data.user?.id)
+
+  console.log(profile.data)
+
   return (
     <html lang="en">
       <body>{children}</body>
