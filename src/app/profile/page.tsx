@@ -3,11 +3,10 @@
 import { useProfile } from "@/contexts/profileContext"
 import { Box, TextField, Avatar, Button} from "@mui/material"
 import { useState, useEffect } from "react"
-import imageCompression from "browser-image-compression"
 
 export default function Home(){
 
-  const { profile } = useProfile()
+  const { profile, updateProfile } = useProfile()
 
   if (!profile){
     return <></>
@@ -18,29 +17,18 @@ export default function Home(){
   const [avatar, setAvatar] = useState<File | undefined>(undefined)
   const [avatarUrl, setAvatarUrl] = useState<string>(profile.avatar_url ?? "")
 
+  //file compression was breaking everything so i had to remove it
+
   function handleAvatar(e: React.ChangeEvent<HTMLInputElement>){
     const file = e.target.files?.[0]
-
-    if(!file) return
-
-    const options = {
-      maxWidthOrHeight: 256,
-      fileType: 'image/webp'
-    }
-
-    const controller = new AbortController()
-
-    imageCompression(file, options)
-      .then((compressedFile)=>setAvatar(compressedFile))
-      .catch((error)=>console.log(error))
-
-    setTimeout(function () {
-      controller.abort(new Error('Abort Compression'))
-    }, 1500)
+    if (!file) return
+    setAvatar(file)
   }
 
   function handleSave(){
-
+    if(profile){
+      updateProfile(profile, avatar)
+    }
   }
 
   useEffect(() => {

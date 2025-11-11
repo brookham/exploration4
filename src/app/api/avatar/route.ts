@@ -20,7 +20,7 @@ export async function POST(request: Request){
 
   const filename = `${id}/avatar.webp`
 
-  const { url } = await put(filename, image, {access: 'public'})
+  const { url } = await put(filename, image, {access: 'public', allowOverwrite: true})
 
   return Response.json({avatarUrl: url})
 
