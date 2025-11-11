@@ -53,6 +53,10 @@ export default function Home(){
 
 
   }, [avatar])
+
+  if (!profile){
+    return <></>
+  }
   
 
   return (

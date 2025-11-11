@@ -1,0 +1,27 @@
+import { createClient } from "@/utils/supabase/server"
+
+import { put } from "@vercel/blob"
+
+export async function POST(request: Request){
+  const supabase = await createClient()
+  const user = await supabase.auth.getUser()
+
+  if (!user || !user.data.user){
+    return Response.json({message: "Must Be Logged In"})
+  }
+
+  const formData = await request.formData()
+  const image = formData.get('image') as Blob
+  const id = formData.get('id')
+
+  if (id != user.data.user.id){
+    return Response.json({message: "Invalid User Id"})
+  }
+
+  const filename = `${id}/avatar.webp`
+
+  const { url } = await put(filename, image, {access: 'public'})
+
+  return Response.json({avatarUrl: url})
+
+}
