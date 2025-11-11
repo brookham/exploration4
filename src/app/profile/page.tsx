@@ -28,7 +28,7 @@ export default function Home(){
       fileType: 'image/webp'
     }
 
-    var controller = new AbortController()
+    const controller = new AbortController()
 
     imageCompression(file, options)
       .then((compressedFile)=>setAvatar(compressedFile))
