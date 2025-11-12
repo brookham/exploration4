@@ -4,11 +4,14 @@ import { createContext, useContext } from "react"
 
 import { Profile } from "@/types/profile"
 
+import { useRouter } from "next/navigation"
+
 
 //data structure
 type ProfileProps = {
   profile: Profile | undefined
   updateProfile: (profile: Profile, avatar: File | undefined) => void
+  signOut: () => void
 }
 
 //create context
@@ -16,6 +19,8 @@ const ProfileContext = createContext<ProfileProps | undefined>(undefined)
 
 //provider
 export function ProfileProvider(props: { profile: Profile | undefined, children: React.ReactNode }) {
+
+  const router = useRouter()
 
   async function updateProfile(profile: Profile, avatar: File | undefined) {
 
@@ -45,11 +50,15 @@ export function ProfileProvider(props: { profile: Profile | undefined, children:
         body: JSON.stringify({profile: profile})
       }
     )
+  }
 
+  async function signOut(){
+    await fetch("api/signOut")
+    router.push("/login")
   }
 
   return (
-    <ProfileContext.Provider value={{ profile: props.profile, updateProfile }}>
+    <ProfileContext.Provider value={{ profile: props.profile, updateProfile, signOut }}>
       {props.children}
     </ProfileContext.Provider>
   )
