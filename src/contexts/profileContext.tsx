@@ -1,18 +1,18 @@
 'use client'
 
-import { Children, createContext, useContext } from "react"
+import { createContext, useContext } from "react"
 
 import { Profile } from "@/types/profile"
 
 
 //data structure
-type profileProps = {
+type ProfileProps = {
   profile: Profile | undefined
   updateProfile: (profile: Profile, avatar: File | undefined) => void
 }
 
 //create context
-const ProfileContext = createContext<profileProps | undefined>(undefined)
+const ProfileContext = createContext<ProfileProps | undefined>(undefined)
 
 //provider
 export function ProfileProvider(props: { profile: Profile | undefined, children: React.ReactNode }) {
@@ -35,7 +35,16 @@ export function ProfileProvider(props: { profile: Profile | undefined, children:
       avatarUrl = data.avatarUrl
     }
 
-    console.log(avatarUrl)
+    if (avatarUrl){
+      profile.avatar_url = avatarUrl 
+    }
+
+    const res = await fetch("/api/profile",
+      {
+        method: "PUT",
+        body: JSON.stringify({profile: profile})
+      }
+    )
 
   }
 

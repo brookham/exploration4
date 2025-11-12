@@ -27,9 +27,13 @@ export default function Home(){
 
   function handleSave(){
     if(profile){
+      profile.full_name = fullName
+      profile.website = website
       updateProfile(profile, avatar)
     }
   }
+
+
 
   useEffect(() => {
     if(avatar){
