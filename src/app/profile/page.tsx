@@ -12,6 +12,8 @@ export default function Home(){
     return <></>
   }
 
+  
+
   const [fullName, setFullName] = useState<string>(profile.full_name ?? "")
   const [website, setWebsite] = useState<string>(profile.website ?? "")
   const [avatar, setAvatar] = useState<File | undefined>(undefined)
