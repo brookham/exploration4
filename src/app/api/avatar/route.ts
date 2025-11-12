@@ -1,6 +1,6 @@
 import { createClient } from "@/utils/supabase/server"
 
-import { put } from "@vercel/blob"
+import { put, list, del } from "@vercel/blob"
 
 export async function POST(request: Request){
   const supabase = await createClient()
@@ -18,7 +18,16 @@ export async function POST(request: Request){
     return Response.json({message: "Invalid User Id"})
   }
 
-  const filename = `${id}/avatar.webp`
+  const userFolder = `${user.data.user.id}/`
+
+  const existingFiles = await list({prefix: userFolder})
+
+
+  for (let i = 0; i < existingFiles.blobs.length; i++) {
+    del(existingFiles.blobs[i].pathname)
+  }
+
+  const filename = `${userFolder}avatar-${Date.now()}.webp`
 
   const { url } = await put(filename, image, {access: 'public', allowOverwrite: true})
 
